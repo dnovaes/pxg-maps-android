@@ -1,21 +1,31 @@
 name: Build Release and Deploy
-
 on:
   release:
-    types: [created]
-
+    types:
+      - created
 jobs:
   generate-keystore-properties:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Decode signing key
-        run: echo "${{ secrets.APP_SIGN_STORE_FILE }}" | base64 -d > pxgmapsandroid-key 
-      
-      - name: Create keystore.properties
-         run: |
+        run: echo "${{ secrets.APP_SIGN_STORE_FILE }}" | base64 -d > pxgmapsandroid-key
+      - name: Create keystore
+        run: |
+          echo "storeFile=pxgmapsandroid-key" > keystore.properties
+          echo "storePassword=${{ secrets.APP_SIGN_STORE_PASSWORD }}" >> keystore.properties
+          echo "keyAlias=${{ secrets.APP_SIGN_KEY_ALIAS }}" >> keystore.properties
+          echo "keyPassword=${{ secrets.APP_SIGN_KEY_PASSWORD }}" >> keystore.properties
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+      - name: Build the app
+        run: ./gradlew assembleRelease
+
+      - name: Create keystore
+        run: |
           echo "storeFile=pxgmapsandroid-key" > keystore.properties
           echo "storePassword=${{ secrets.APP_SIGN_STORE_PASSWORD }}" >> keystore.properties
           echo "keyAlias=${{ secrets.APP_SIGN_KEY_ALIAS }}" >> keystore.properties
@@ -28,4 +38,5 @@ jobs:
 
       - name: Build the app
         run: ./gradlew assembleRelease
+
 
