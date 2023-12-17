@@ -1,10 +1,10 @@
-name: Build Release and Deploy
+name: Build and Deploy on Release
 on:
   release:
     types:
       - created
 jobs:
-  generate-keystore-properties:
+  job-build-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
