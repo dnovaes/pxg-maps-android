@@ -34,7 +34,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '11'
+          distribution: 'amazon-corretto'
+          java-version: '17'
 
       - name: Build the app
         run: ./gradlew assembleRelease
