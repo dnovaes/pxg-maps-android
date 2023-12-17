@@ -13,7 +13,7 @@ jobs:
         run: echo "${{ secrets.APP_SIGN_STORE_FILE }}" | base64 -d > pxgmapsandroid-key
       - name: Create keystore
         run: |
-          echo "storeFile=pxgmapsandroid-key" > keystore.properties
+          echo "storeFile=../pxgmapsandroid-key" > keystore.properties
           echo "storePassword=${{ secrets.APP_SIGN_STORE_PASSWORD }}" >> keystore.properties
           echo "keyAlias=${{ secrets.APP_SIGN_KEY_ALIAS }}" >> keystore.properties
           echo "keyPassword=${{ secrets.APP_SIGN_KEY_PASSWORD }}" >> keystore.properties
